@@ -1,0 +1,328 @@
+{% extends "layouts/base_layout.html" %}
+{% load static %}
+{% block content %}
+<div class=" md:flex justify-between items-center">
+   <div class="flex flex-wrap ">
+      <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4" id="pills-tabVertical" role="tablist">
+         <li class="nav-item flex-grow text-center" role="presentation">
+            <button class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 " id="pills-list-tab" data-bs-toggle="pill" data-bs-target="#pills-list" role="tab" aria-controls="pills-list" aria-selected="false">
+               <span class="flex items-center">
+                  <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="heroicons-outline:clipboard-list"></iconify-icon>
+                  <span>List View</span>
+               </span>
+            </button>
+            <button class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 active" id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid" role="tab" aria-controls="pills-grid" aria-selected="true">
+               <span class="flex items-center">
+                  <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="heroicons-outline:view-grid"></iconify-icon>
+                  <span>Grid View</span>
+               </span>
+            </button>
+         </li>
+      </ul>
+      <button class="btn inline-flex justify-center btn-dark dark:bg-slate-700 dark:text-slate-300 m-1 ">
+         <span class="flex items-center">
+            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="ph:plus-bold"></iconify-icon>
+            <span>Add Project</span>
+         </span>
+      </button>
+   </div>
+</div>
+
+<div class="tab-content mt-6" id="pills-tabContent">
+   <div class="tab-pane fade show active" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab">
+      <div class="tab-content">
+         <div class="card">
+            <div class="card-body px-6 rounded overflow-hidden">
+               <div class="overflow-x-auto -mx-6">
+                  <div class="inline-block min-w-full align-middle">
+                     <div class="overflow-hidden ">
+                        <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 ">
+                           <thead class="bg-slate-200 dark:bg-slate-700">
+                              <tr>
+                                 <th scope="col" class="table-th ">
+                                    NAME
+                                 </th>
+                                 <th scope="col" class="table-th ">
+                                    START DATE
+                                 </th>
+                                 <th scope="col" class="table-th ">
+                                    ASSIGNED
+                                 </th>
+                                 <th scope="col" class="table-th ">
+                                    STATUS
+                                 </th>
+                                 <th scope="col" class="table-th ">
+                                    ACTION
+                                 </th>
+                              </tr>
+                           </thead>
+                           <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+                                {% for project in projects %}
+                                    <tr class="even:bg-slate-50 dark:even:bg-slate-700">
+                                        <td class="table-td">
+                                            <div class="flex space-x-3 items-center text-left rtl:space-x-reverse">
+                                            <div class="flex-none">
+                                                <div class="h-10 w-10 rounded-full text-sm bg-[#E0EAFF] dark:bg-slate-700 flex flex-col items-center justify-center font-medium -tracking-[1px]">
+                                                    <img src="{% static 'images/post/c1.png' %}" alt="Image" class="w-full h-full rounded-full">
+                                                </div>
+                                            </div>
+                                            <div class="flex-1 font-medium text-sm leading-4 whitespace-nowrap">
+                                                {{ project.name }}
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td class="table-td">
+                                            <span class="block date-text">{{ project.created_at }}</span>
+                                        </td>
+                                        <td class="table-td">
+                                            <div class="flex justify-start -space-x-1.5 rtl:space-x-reverse">
+                                                {% if project.managers.all|length > 3 %}
+                                                    {% for i in '012'|make_list %}
+                                                        <div class="h-6 w-6 rounded-full ring-1 ring-slate-100">
+                                                            <img src="{% static 'images/post/c1.png' %}" alt="Image" class="w-full h-full rounded-full">
+                                                        </div>
+                                                    {% endfor %}
+                                                    <div class="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-300 text-xs ring-2 ring-slate-100 dark:ring-slate-700 rounded-full h-6 w-6 flex flex-col justify-center items-center">
+                                                        +{{ project.managers.all|length|add:-3 }}
+                                                    </div>
+                                                {% else %}
+                                                    {% for user in project.managers.all %}
+                                                        <div class="h-6 w-6 rounded-full ring-1 ring-slate-100">
+                                                            <img src="{% static 'images/post/c1.png' %}" alt="Image" class="w-full h-full rounded-full">
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                {% if project.managers.all|length == 0 %}
+                                                        <span> No One</span>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        {% if project.status == "active" %}
+                                            <td class="table-td">
+                                                <span class="badge bg-success-500 text-success-500 bg-opacity-30 capitalize">active</span>
+                                            </td>
+                                        {% else %}
+                                            <td class="table-td">
+                                                <span class="badge bg-success-500 text-danger-500 bg-opacity-30 capitalize">deactive</span>
+                                            </td>
+                                        {% endif %}
+                                        <td class="table-td">
+                                            <div class="dropstart relative">
+                                            <button class="inline-flex justify-center items-center" type="button" id="tableDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <iconify-icon class="text-xl ltr:ml-2 rtl:mr-2" icon="heroicons-outline:dots-vertical"></iconify-icon>
+                                            </button>
+                                            <ul class="dropdown-menu min-w-max absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700 shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
+                                                <li>
+                                                    <a href="#" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize  rtl:space-x-reverse">
+                                                        <iconify-icon icon="heroicons-outline:eye"></iconify-icon>
+                                                        <span>View</span>
+                                                    </a>
+                                                </li>
+                                                {% if project.created_by.id == user.id %}
+                                                    <li>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#editModal{{project.id}}" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300 last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize rtl:space-x-reverse">
+                                                        <iconify-icon icon="clarity:note-edit-line"></iconify-icon>
+                                                        <span>Edit</span>
+                                                    </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url "project_delete" project.id %}" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300 last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize rtl:space-x-reverse">
+                                                            <iconify-icon icon="fluent:delete-28-regular"></iconify-icon>
+                                                            <span>Delete</span>
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                                
+                                            </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="tab-pane fade " id="pills-grid" role="tabpanel" aria-labelledby="pills-grid-tab">
+      <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 ">
+        {% for project in projects %}
+            <div class="card rounded-md bg-white dark:bg-slate-800 shadow-base custom-class card-body p-6">
+                <header class="flex justify-between items-end">
+                    <div class="flex space-x-4 items-center rtl:space-x-reverse">
+                        <div class="flex-none">
+                            <div class="h-10 w-10 rounded-md text-lg bg-slate-100 text-slate-900 dark:bg-slate-600 dark:text-slate-200 flex flex-col items-center justify-center font-normal capitalize">
+                                <img src="{% static 'images/post/c1.png' %}" alt="Image" class="w-full h-full rounded-full">
+                            </div>
+                        </div>
+                        <div class="font-medium text-base leading-6">
+                            <div class="dark:text-slate-200 text-slate-900 max-w-[160px] truncate">
+                                {{ project.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="dropstart relative">
+                            <button class="inline-flex justify-center items-center" type="button" id="tableDropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                <iconify-icon class="text-xl ltr:ml-2 rtl:mr-2" icon="heroicons-outline:dots-vertical"></iconify-icon>
+                            </button>
+                            <ul class="dropdown-menu min-w-max absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700 shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
+                                <li>
+                                <a href="#" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white
+                                    w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize  rtl:space-x-reverse">
+                                    <iconify-icon icon="heroicons-outline:eye"></iconify-icon>
+                                    <span>View</span>
+                                </a>
+                                </li>
+                                {% if project.created_by.id == user.id %}
+                                <li>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal{{project.id}}" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300 last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize rtl:space-x-reverse">
+                                    <iconify-icon icon="clarity:note-edit-line"></iconify-icon>
+                                    <span>Edit</span>
+                                </a>
+                                </li>
+                                <li>
+                                <a href="{% url "project_delete" project.id %}" class="hover:bg-slate-900 dark:hover:bg-slate-600 dark:hover:bg-opacity-70 hover:text-white w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm dark:text-slate-300 last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex space-x-2 items-center capitalize rtl:space-x-reverse">
+                                    <iconify-icon icon="fluent:delete-28-regular"></iconify-icon>
+                                    <span>Delete</span>
+                                </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+                <div class="text-slate-600 dark:text-slate-400 text-sm pt-4 pb-8"></div>
+                <div class="flex space-x-4 rtl:space-x-reverse">
+                    <div>
+                        <span class="block date-label">Created date</span>
+                        <span class="block date-text">{{ project.created_at }}</span>
+                    </div>
+                    <div>
+                        <span class="block date-label">Created By</span>
+                        <span class="block date-text">{{ project.created_by }}</span>
+                    </div>
+                </div>
+                <div class="ltr:text-right rtl:text-left text-xs text-slate-600 dark:text-slate-300 mb-1 font-medium">
+                    Status
+                </div>
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <div>
+                        <div class="text-slate-400 dark:text-slate-400 text-sm font-normal mb-3">
+                            Assigned to
+                        </div>
+                        <div class="flex justify-start -space-x-1.5 rtl:space-x-reverse">
+                            {% if project.managers.all|length > 3 %}
+                                {% for i in '012'|make_list %}
+                                    <div class="h-6 w-6 rounded-full ring-1 ring-slate-100">
+                                        <img src="{% static 'images/post/c1.png' %}" alt="Image" class="w-full h-full rounded-full">
+                                    </div>
+                                {% endfor %}
+                                <div class="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-300 text-xs ring-2 ring-slate-100 dark:ring-slate-700 rounded-full h-6 w-6 flex flex-col justify-center items-center">
+                                    +{{ project.managers.all|length|add:-3 }}
+                                </div>
+                            {% else %}
+                                {% for user in project.managers.all %}
+                                <div class="h-6 w-6 rounded-full ring-1 ring-slate-100">
+                                    <img src="{% static 'images/post/c1.png' %}" alt="Image" class="w-full h-full rounded-full">
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% if project.managers.all|length == 0 %}
+                                <div class="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-300 text-xs ring-2 ring-slate-100 dark:ring-slate-700 rounded-full h-6 w-6 flex flex-col justify-center items-center">
+                                    None
+                                </div>
+                            {% endif %}
+                            
+                            
+                        </div>
+                    </div>
+                    <div class="ltr:text-right rtl:text-left">
+                        <span class="inline-flex items-center space-x-1 bg-light-500 bg-opacity-[0.16] text-light-500 text-xs font-normal px-2 py-1 rounded-full rtl:space-x-reverse">
+                            {% if project.status == "active" %}
+                                
+                                    <span class="badge bg-success-500 text-success-500 bg-opacity-30 capitalize">active</span>
+                                
+                            {% else %}
+                                
+                                    <span class="badge bg-success-500 text-danger-500 bg-opacity-30 capitalize">deactive</span>
+                                
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+      </div>
+   </div>
+</div>
+
+{% for project in projects %}
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="editModal{{project.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog relative w-auto pointer-events-none">
+            <div class="modal-content border-none shadow-lg relative flex flex-col lg:w-[576px] w-full pointer-events-auto bg-white bg-clip-padding
+                rounded-md outline-none text-current">
+                <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
+                    <h3 class="text-base font-medium text-white dark:text-white capitalize">
+                        Edit Project {{ project.name }}
+                    </h3>
+                    <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center
+                        dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-4">
+                        <form class="flex flex-col space-y-3" action="{% url "project_update" project.id %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-area relative">
+                                <label for="largeInput" class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Name" value="{{project.name}}">
+                            </div>
+                            <div class="input-area relative">
+                                <label for="largeInput" class="form-label">Description</label>
+                                <input type="text" name="description" class="form-control" placeholder="Description" value="{{project.description}}">
+                            </div>
+                            <div class="input-area relative">
+                                <label for="status_select" class="form-label">Status Select</label>
+                                <select name="status_select" id="status_select" class="form-control w-full mt-2" value="{{project.status}}">
+                                    <option {% if project.status == "active" %}selected{% endif %} value="active" class="py-1 font-Inter font-normal text-sm text-slate-600">Active</option>
+                                    <option {% if project.status == "deactive" %}selected{% endif %} value="deactive" class="py-1 font-Inter font-normal text-sm text-slate-600">Deactive</option>
+                                </select>
+                            </div>
+                            <div class="input-area relative">
+                                <label for="largeInput" class="form-label">Cover Image</label>
+                                <div class="multiFilePreview">
+                                    <label>
+                                    <input type="file" class="w-full hidden" name="cover_image" accept=".jpg, .jpeg, .png">
+                                    <span class="w-full h-[40px] file-control flex items-center custom-class">
+                                    <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                                    <span id="placeholder" class="text-slate-400">Choose a file or drop it here...</span>
+                                    </span>
+                                    <span class="file-name flex-none cursor-pointer border-l px-4 border-slate-200 dark:border-slate-700 h-full inline-flex items-center bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-sm rounded-tr rounded-br font-normal">Browse</span>
+                                    </span>
+                                    </label>
+                                    <div id="file-preview"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-end rounded-b dark:border-slate-600">
+                                <button data-bs-dismiss="modal" class="btn inline-flex justify-center text-white bg-black-500">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+{% endblock content %}

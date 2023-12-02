@@ -1,0 +1,39 @@
+{% load static %}
+
+<!doctype html>
+<html lang="zxx" dir="rtl" class="light">
+
+    <!-- Load Header -->
+    {% include "layouts/head_layout.html" %}
+  <body class=" font-inter dashcode-app" id="body_class">
+    
+    <main class="app-wrapper">
+
+        <!-- Load Sidebar -->
+        {% include "partials/sidebar.html" %}
+        <div class="flex flex-col justify-between min-h-screen">
+            <div>
+                {% include "partials/header.html" %}
+                <div class="content-wrapper transition-all duration-150 ltr:ml-[248px] rtl:mr-[248px]" id="content_wrapper">
+                    <div class="page-content">
+                        <div class="transition-all duration-150 container-fluid" id="page_layout">
+                            <div id="content_layout">
+                                <div class=" space-y-5">
+                                    <!-- Load Content -->
+                                    {% block content %}{% endblock content %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Load Footer -->
+        {% include "layouts/footer_layout.html" %}
+    </main>
+
+    <!-- Load Scripts -->
+    
+    {% include "partials/scripts.html" %}
+  </body>
+</html>
