@@ -792,7 +792,13 @@
   });
 
   // Dragula for Kanban
-  dragula([document.getElementById("todo"), document.getElementById("progress"), document.getElementById("done")]);
+  const dragulaErs = dragula([document.getElementById("todo"), document.getElementById("progress"), document.getElementById("done")],);
+  dragulaErs.on('drop', (el, target, source, sibling) => {
+        console.log(el)
+        console.log(target)
+        console.log(source)
+        console.log(sibling)
+  })
 
   // Step From
   $("#example-basic").steps({

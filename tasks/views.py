@@ -3,9 +3,9 @@ from django.contrib.auth import authenticate, login, logout, get_user
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Manager, Project
+from .models import Manager, Project, Task
 from django.shortcuts import redirect
-from .forms import ProjectsForm
+from .forms import ProjectsForm, TasksForm
 
 import re
 from itertools import chain
@@ -126,6 +126,119 @@ def project_add(request):
             )
 
     return render(request, "views/dashboard/projects/create.html", {})
+
+
+@login_required()
+def tasks_list(request, project_id):
+    project = Project.objects.filter(id=project_id).first()
+    if project:
+        tasks = project.task_set.all()
+        finished_tasks = []
+        progress_tasks = []
+        todo_tasks = []
+        for task in tasks:
+            if task.status == "pending":
+                todo_tasks.append(task)
+            elif task.status == "in_progress":
+                progress_tasks.append(task)
+            elif task.status == "done":
+                finished_tasks.append(task)
+        print(tasks)
+        return render(
+            request,
+            "views/dashboard/tasks/list.html",
+            {
+                "project": project,
+                "tasks": tasks,
+                "todo_tasks": todo_tasks,
+                "progress_tasks": progress_tasks,
+                "finished_tasks": finished_tasks,
+            },
+        )
+    return redirect("project_list")
+
+
+@login_required()
+def tasks_status_change(request, task_id):
+    pass
+
+
+@login_required()
+def tasks_create(request, project_id):
+    project = Project.objects.filter(id=project_id).first()
+    if project:
+        if request.method == "POST":
+            try:
+                formData = TasksForm(request.POST, request.FILES)
+                if formData.is_valid():
+                    new_task = Task(
+                        name=formData.cleaned_data["name"],
+                        days_left=formData.cleaned_data["days_left"],
+                        description=formData.cleaned_data["description"],
+                        status=formData.cleaned_data["status_select"],
+                    )
+                    if formData.cleaned_data["cover_image"]:
+                        new_task.avatar = formData.cleaned_data["cover_image"]
+
+                    new_task.created_by = get_user(request)
+                    new_task.project = project
+                    new_task.save()
+                    return redirect("/tasks/" + str(project.id))
+            except Exception as e:
+                print("ERROR")
+                print(e)
+                return render(
+                    request,
+                    "views/dashboard/tasks/create.html",
+                    {"errors": "Creating Task Failed"},
+                )
+        else:
+            return render(
+                request, "views/dashboard/tasks/create.html", {"project": project}
+            )
+    return redirect("project_list")
+
+
+@login_required()
+def tasks_update(request, task_id):
+    if request.method == "POST":
+        print("HERE")
+        task = Task.objects.filter(id=task_id).first()
+        if task:
+            user = get_user(request)
+            if task.created_by.id == user.id:
+                formData = TasksForm(request.POST, request.FILES)
+                if formData.is_valid():
+                    if formData.cleaned_data["cover_image"]:
+                        task.avatar = formData.cleaned_data["cover_image"]
+
+                    task.name = formData.cleaned_data["name"]
+                    task.description = formData.cleaned_data["description"]
+                    task.status = formData.cleaned_data["status_select"]
+                    task.days_left = formData.cleaned_data["days_left"]
+
+                    task.save()
+                    return redirect("/tasks/" + str(task.project.id))
+
+    return redirect("project_list")
+
+
+@login_required()
+def tasks_delete(request, task_id):
+    task = Task.objects.filter(id=task_id).first()
+    if task:
+        user = get_user(request)
+        project_id = task.project.id
+        if task.created_by.id == user.id:
+            task.delete()
+
+        return redirect("/tasks/" + str(project_id))
+    return redirect("project_list")
+
+
+@login_required()
+def tasks_view(request, project_id, task_id):
+    return render(request, "views/dashboard/tasks/list.html", {})
 
 
 def login_user(request):

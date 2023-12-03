@@ -68,6 +68,7 @@ class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=256)
+    days_left = models.IntegerField(default=1)
     avatar = models.ImageField(
         upload_to=task_dir_path, default="static/images/all-img/card-7.png"
     )
