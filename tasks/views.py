@@ -280,6 +280,35 @@ def tasks_view(request, project_id, task_id):
     return render(request, "views/dashboard/tasks/list.html", {})
 
 
+@login_required()
+def comments_view(request, task_id):
+    try:
+        user = get_user(request)
+        if user:
+            projects = user.project_set.all()
+            user_made_projects = user.created_by.all()
+            result_list = list(chain(user_made_projects, projects))
+            result_list = list(dict.fromkeys(result_list))
+            task_ids = []
+            for project in result_list:
+                tasks = project.task_set.all()
+                for task in tasks:
+                    task_ids.append(task.id)
+            if task_id in task_ids:
+                task = Task.objects.filter(id=task_id).first()
+                if task:
+                    comments = task.comment_set.all()
+            return render(
+                request,
+                "views/dashboard/comments/view.html",
+                {"task": task, "comments": comments},
+            )
+    except:
+        pass
+
+    return redirect("project_list")
+
+
 def login_user(request):
     if request.method == "POST":
         login_input = request.POST.get("username")

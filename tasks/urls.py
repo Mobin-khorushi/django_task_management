@@ -44,4 +44,5 @@ urlpatterns = [
         views.tasks_delete,
         name="tasks_delete",
     ),
+    path("comments/view/<int:task_id>", views.comments_view, name="comments_view"),
 ]
