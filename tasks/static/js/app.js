@@ -777,12 +777,37 @@
     checkbox.addEventListener("change", function () {
       // Get parent list item
       var listItem = checkbox.closest("li");
-
+      const taskid = $(checkbox).attr('data-id')
+      const status = $(checkbox).attr('data-status')
       // Toggle class based on checkbox state
       if (checkbox.checked) {
         listItem.classList.add("completed");
+        $.ajax({
+          url: "/tasks/status/"+taskid,
+          method: "POST",
+          data: {
+            'target':'done',
+            'source':status
+          },
+        }).done(function(response) {
+          console.log(response)
+        }).fail(function (error) {
+            console.log(error);
+        });
       } else {
         listItem.classList.remove("completed");
+        $.ajax({
+          url: "/tasks/status/"+taskid,
+          method: "POST",
+          data: {
+            'target':'pending',
+            'source':status
+          },
+        }).done(function(response) {
+          console.log(response)
+        }).fail(function (error) {
+            console.log(error);
+        });
       }
     });
   });

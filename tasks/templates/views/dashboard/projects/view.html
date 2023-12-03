@@ -115,180 +115,29 @@
                 <!-- BEGIN: Task List -->
                 <div>
                     <ul class="divide-y divide-slate-100 dark:divide-slate-700 -mx-6 -mb-6">
-                      <li class="flex items-center px-6 space-x-4 py-4 rtl:space-x-reverse">
+                      {% for task in tasks %}
+                      <li class="flex items-center px-6 space-x-4 py-4 rtl:space-x-reverse {% if task.status == "done" %}completed{% endif %}">
                           <div class="flex-none flex space-x-2 items-center rtl:space-x-reverse">
                             <div class="checkbox-area">
                                 <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="hidden" name="tasklist">
+                                <input type="checkbox" class="hidden" name="tasklist" data-id="{{ task.id }}" data-status="{{ task.status }}" {% if task.status == "done" %}checked{% endif %}>
                                 <span class="h-4 w-4 border flex-none border-slate-100 dark:border-slate-800 rounded inline-flex ltr:mr-3 rtl:ml-3 relative
                                   transition-all duration-150 bg-slate-100 dark:bg-slate-900">
-                                <img src="assets/images/icon/ck-white.svg" alt="" class="h-[10px] w-[10px] block m-auto opacity-0"></span>
+                                <img src="{% static 'images/icon/ck-white.svg' %}" alt="" class="h-[10px] w-[10px] block m-auto opacity-0"></span>
                                 </label>
                             </div>
                             <div class="img-active
                                 h-8 w-8 rounded-full text-white">
-                                <img src=assets/images/users/user-1.jpg alt="" class="block w-full h-full object-cover rounded-full">
+                                <img src="{% static 'images/users/user-1.jpg' %}" alt="" class="block w-full h-full object-cover rounded-full">
                             </div>
                           </div>
                           <div class="flex-1 flex bar-active">
                             <span class="flex-1 text-sm text-slate-600 dark:text-slate-300">
-                            Amet minim mollit no...
-                            </span>
-                            <span class="flex-none space-x-2 text-base text-secondary-500 rtl:space-x-reverse">
-                                <button
-                                  type="button"
-                                  class="transition duration-150 hover:text-danger-500"
-                                  >
-                                  <iconify-icon icon="heroicons-outline:trash"></iconify-icon>
-                                </button>
+                            {{ task.name }}
                             </span>
                           </div>
                       </li>
-                      <li class="flex items-center px-6 space-x-4 py-4 rtl:space-x-reverse">
-                          <div class="flex-none flex space-x-2 items-center rtl:space-x-reverse">
-                            <div class="checkbox-area">
-                                <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="hidden" name="tasklist">
-                                <span class="h-4 w-4 border flex-none border-slate-100 dark:border-slate-800 rounded inline-flex ltr:mr-3 rtl:ml-3 relative
-                                  transition-all duration-150 bg-slate-100 dark:bg-slate-900">
-                                <img src="assets/images/icon/ck-white.svg" alt="" class="h-[10px] w-[10px] block m-auto opacity-0"></span>
-                                </label>
-                            </div>
-                            <div class="img-active
-                                h-8 w-8 rounded-full text-white">
-                                <img src=assets/images/users/user-2.jpg alt="" class="block w-full h-full object-cover rounded-full">
-                            </div>
-                          </div>
-                          <div class="flex-1 flex bar-active">
-                            <span class="flex-1 text-sm text-slate-600 dark:text-slate-300">
-                            Amet minim mollit no...
-                            </span>
-                            <span class="flex-none space-x-2 text-base text-secondary-500 rtl:space-x-reverse">
-                                <button
-                                  type="button"
-                                  class="transition duration-150 hover:text-danger-500"
-                                  >
-                                  <iconify-icon icon="heroicons-outline:trash"></iconify-icon>
-                                </button>
-                            </span>
-                          </div>
-                      </li>
-                      <li class="flex items-center px-6 space-x-4 py-4 rtl:space-x-reverse">
-                          <div class="flex-none flex space-x-2 items-center rtl:space-x-reverse">
-                            <div class="checkbox-area">
-                                <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="hidden" name="tasklist">
-                                <span class="h-4 w-4 border flex-none border-slate-100 dark:border-slate-800 rounded inline-flex ltr:mr-3 rtl:ml-3 relative
-                                  transition-all duration-150 bg-slate-100 dark:bg-slate-900">
-                                <img src="assets/images/icon/ck-white.svg" alt="" class="h-[10px] w-[10px] block m-auto opacity-0"></span>
-                                </label>
-                            </div>
-                            <div class="img-active
-                                h-8 w-8 rounded-full text-white">
-                                <img src=assets/images/users/user-3.jpg alt="" class="block w-full h-full object-cover rounded-full">
-                            </div>
-                          </div>
-                          <div class="flex-1 flex bar-active">
-                            <span class="flex-1 text-sm text-slate-600 dark:text-slate-300">
-                            Amet minim mollit no...
-                            </span>
-                            <span class="flex-none space-x-2 text-base text-secondary-500 rtl:space-x-reverse">
-                                <button
-                                  type="button"
-                                  class="transition duration-150 hover:text-danger-500"
-                                  >
-                                  <iconify-icon icon="heroicons-outline:trash"></iconify-icon>
-                                </button>
-                            </span>
-                          </div>
-                      </li>
-                      <li class="flex items-center px-6 space-x-4 py-4 rtl:space-x-reverse">
-                          <div class="flex-none flex space-x-2 items-center rtl:space-x-reverse">
-                            <div class="checkbox-area">
-                                <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="hidden" name="tasklist">
-                                <span class="h-4 w-4 border flex-none border-slate-100 dark:border-slate-800 rounded inline-flex ltr:mr-3 rtl:ml-3 relative
-                                  transition-all duration-150 bg-slate-100 dark:bg-slate-900">
-                                <img src="assets/images/icon/ck-white.svg" alt="" class="h-[10px] w-[10px] block m-auto opacity-0"></span>
-                                </label>
-                            </div>
-                            <div class="img-active
-                                h-8 w-8 rounded-full text-white">
-                                <img src=assets/images/users/user-4.jpg alt="" class="block w-full h-full object-cover rounded-full">
-                            </div>
-                          </div>
-                          <div class="flex-1 flex bar-active">
-                            <span class="flex-1 text-sm text-slate-600 dark:text-slate-300">
-                            Amet minim mollit no...
-                            </span>
-                            <span class="flex-none space-x-2 text-base text-secondary-500 rtl:space-x-reverse">
-                                <button
-                                  type="button"
-                                  class="transition duration-150 hover:text-danger-500"
-                                  >
-                                  <iconify-icon icon="heroicons-outline:trash"></iconify-icon>
-                                </button>
-                            </span>
-                          </div>
-                      </li>
-                      <li class="flex items-center px-6 space-x-4 py-4 rtl:space-x-reverse">
-                          <div class="flex-none flex space-x-2 items-center rtl:space-x-reverse">
-                            <div class="checkbox-area">
-                                <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="hidden" name="tasklist">
-                                <span class="h-4 w-4 border flex-none border-slate-100 dark:border-slate-800 rounded inline-flex ltr:mr-3 rtl:ml-3 relative
-                                  transition-all duration-150 bg-slate-100 dark:bg-slate-900">
-                                <img src="assets/images/icon/ck-white.svg" alt="" class="h-[10px] w-[10px] block m-auto opacity-0"></span>
-                                </label>
-                            </div>
-                            <div class="img-active
-                                h-8 w-8 rounded-full text-white">
-                                <img src=assets/images/users/user-5.jpg alt="" class="block w-full h-full object-cover rounded-full">
-                            </div>
-                          </div>
-                          <div class="flex-1 flex bar-active">
-                            <span class="flex-1 text-sm text-slate-600 dark:text-slate-300">
-                            Amet minim mollit no...
-                            </span>
-                            <span class="flex-none space-x-2 text-base text-secondary-500 rtl:space-x-reverse">
-                                <button
-                                  type="button"
-                                  class="transition duration-150 hover:text-danger-500"
-                                  >
-                                  <iconify-icon icon="heroicons-outline:trash"></iconify-icon>
-                                </button>
-                            </span>
-                          </div>
-                      </li>
-                      <li class="flex items-center px-6 space-x-4 py-4 rtl:space-x-reverse">
-                          <div class="flex-none flex space-x-2 items-center rtl:space-x-reverse">
-                            <div class="checkbox-area">
-                                <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="hidden" name="tasklist">
-                                <span class="h-4 w-4 border flex-none border-slate-100 dark:border-slate-800 rounded inline-flex ltr:mr-3 rtl:ml-3 relative
-                                  transition-all duration-150 bg-slate-100 dark:bg-slate-900">
-                                <img src="assets/images/icon/ck-white.svg" alt="" class="h-[10px] w-[10px] block m-auto opacity-0"></span>
-                                </label>
-                            </div>
-                            <div class="img-active
-                                h-8 w-8 rounded-full text-white">
-                                <img src=assets/images/users/user-6.jpg alt="" class="block w-full h-full object-cover rounded-full">
-                            </div>
-                          </div>
-                          <div class="flex-1 flex bar-active">
-                            <span class="flex-1 text-sm text-slate-600 dark:text-slate-300">
-                            Amet minim mollit no...
-                            </span>
-                            <span class="flex-none space-x-2 text-base text-secondary-500 rtl:space-x-reverse">
-                                <button
-                                  type="button"
-                                  class="transition duration-150 hover:text-danger-500"
-                                  >
-                                  <iconify-icon icon="heroicons-outline:trash"></iconify-icon>
-                                </button>
-                            </span>
-                          </div>
-                      </li>
+                      {% endfor %}
                     </ul>
                 </div>
                 <!-- END: Task List -->
