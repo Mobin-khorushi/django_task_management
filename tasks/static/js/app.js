@@ -792,12 +792,39 @@
   });
 
   // Dragula for Kanban
-  const dragulaErs = dragula([document.getElementById("todo"), document.getElementById("progress"), document.getElementById("done")],);
+  const dragulaErs = dragula([document.getElementById("pending"), document.getElementById("in_progress"), document.getElementById("done")],);
   dragulaErs.on('drop', (el, target, source, sibling) => {
-        console.log(el)
-        console.log(target)
-        console.log(source)
-        console.log(sibling)
+    
+    const taskid = $(el).attr('data-id')
+    console.log("Task ID: " + taskid)
+
+    const csrf = $(el).attr('data-csrf')
+    console.log("Task ID: " + taskid)
+
+    const target_status = $(target).attr('id')
+    console.log("Target Status: " + target_status)
+
+    const source_status = $(source).attr('id')
+    console.log("Source Status: " + source_status)
+
+    var payload = JSON.stringify({
+      target: target_status,
+      source: source_status
+    });
+    $.ajax({
+      url: "/tasks/status/"+taskid,
+      method: "POST",
+      headers: {'X-CSRFToken': csrf},
+      data: {
+        'target':target_status,
+        'source':source_status
+      },
+    }).done(function(response) {
+      console.log(response)
+    }).fail(function (error) {
+        console.log(error);
+    });
+
   })
 
   // Step From

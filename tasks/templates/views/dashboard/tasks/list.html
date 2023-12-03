@@ -21,9 +21,9 @@
             <span class="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-[2px] bg-primary-500"></span>
             <h3 class="text-lg text-slate-900 dark:text-white font-medium capitalize">To Do</h3>
          </div>
-         <div id="todo" class="h-full min-h-[calc(100vh-100px)] ">
+         <div id="pending" class="h-full min-h-[calc(100vh-100px)] ">
             {% for task in todo_tasks %}
-               <div class="px-2 py-4 h-full space-y-4 rounded-bl rounded-br cursor-grab">
+               <div class="px-2 py-4 h-full space-y-4 rounded-bl rounded-br cursor-grab" data-id="{{ task.id }}" data-crsf="{{ csrf_token }}">
                   <div class="card rounded-md bg-white dark:bg-slate-800 shadow-base custom-class card-body p-6">
                      <header class="flex justify-between items-end">
                         <div class="flex space-x-4 items-center rtl:space-x-reverse">
@@ -94,9 +94,9 @@
             <span class="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-[2px] bg-primary-500"></span>
             <h3 class="text-lg text-slate-900 dark:text-white font-medium capitalize">In Progress</h3>
          </div>
-         <div id="progress" class="h-full min-h-[calc(100vh-100px)] ">
+         <div id="in_progress" class="h-full min-h-[calc(100vh-100px)] ">
             {% for task in progress_tasks %}
-               <div class="px-2 py-4 h-full space-y-4 rounded-bl rounded-br cursor-grab">
+               <div class="px-2 py-4 h-full space-y-4 rounded-bl rounded-br cursor-grab" data-id="{{ task.id }}" data-crsf="{{ csrf_token }}">
                   <div class="card rounded-md bg-white dark:bg-slate-800 shadow-base custom-class card-body p-6">
                      <header class="flex justify-between items-end">
                         <div class="flex space-x-4 items-center rtl:space-x-reverse">
@@ -169,7 +169,7 @@
          </div>
          <div id="done" class="h-full min-h-[calc(100vh-100px)] ">
             {% for task in finished_tasks %}
-               <div class="px-2 py-4 h-full space-y-4 rounded-bl rounded-br cursor-grab">
+               <div class="px-2 py-4 h-full space-y-4 rounded-bl rounded-br cursor-grab" data-id="{{ task.id }}" data-crsf="{{ csrf_token }}">
                   <div class="card rounded-md bg-white dark:bg-slate-800 shadow-base custom-class card-body p-6">
                      <header class="flex justify-between items-end">
                         <div class="flex space-x-4 items-center rtl:space-x-reverse">

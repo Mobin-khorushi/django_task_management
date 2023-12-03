@@ -3,9 +3,12 @@ from django.contrib.auth import authenticate, login, logout, get_user
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from .models import Manager, Project, Task
 from django.shortcuts import redirect
 from .forms import ProjectsForm, TasksForm
+
+from django.http.response import JsonResponse
 
 import re
 from itertools import chain
@@ -159,8 +162,18 @@ def tasks_list(request, project_id):
 
 
 @login_required()
+@csrf_exempt
 def tasks_status_change(request, task_id):
-    pass
+    if request.method == "POST":
+        target_input = request.POST.get("target")
+        source_input = request.POST.get("source")
+        task = Task.objects.filter(id=task_id).first()
+        if task:
+            if task.status == source_input:
+                task.status = target_input
+                task.save()
+                return JsonResponse({"success": True, "message": "DATA UPDATED"})
+    return JsonResponse({"success": False, "message": "NO DATA"})
 
 
 @login_required()
@@ -202,7 +215,6 @@ def tasks_create(request, project_id):
 @login_required()
 def tasks_update(request, task_id):
     if request.method == "POST":
-        print("HERE")
         task = Task.objects.filter(id=task_id).first()
         if task:
             user = get_user(request)
