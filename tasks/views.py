@@ -73,6 +73,33 @@ def project_delete(request, id):
 
 
 @login_required()
+def project_view(request, id):
+    project = Project.objects.filter(id=id).first()
+    if project:
+        user = get_user(request)
+        project_users = project.managers.all().values_list("id")
+        if project.created_by.id == user.id or user.id in project_users:
+            comments = 0
+            tasks = project.task_set.all()
+            for task in tasks:
+                comments += task.comment_set.count()
+            return render(
+                request,
+                "views/dashboard/projects/view.html",
+                {
+                    "project": project,
+                    "tasks": tasks,
+                    "finished_task_count": project.task_set.filter(
+                        status="done"
+                    ).count(),
+                    "comments_count": comments,
+                },
+            )
+
+    return redirect("project_list")
+
+
+@login_required()
 def project_add(request):
     if request.method == "POST":
         try:
