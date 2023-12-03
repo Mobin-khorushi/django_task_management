@@ -473,46 +473,33 @@
                               <th scope="col" class=" table-th ">
                                  ASSIGNEE
                               </th>
-                              <th scope="col" class=" table-th ">
-                                 STATUS
-                              </th>
-                              <th scope="col" class=" table-th ">
-                                 TIME
-                              </th>
-                              <th scope="col" class=" table-th ">
-                                 CHART
-                              </th>
+                              {% if user.id == project.created_by.id %}
                               <th scope="col" class=" table-th ">
                                  ACTION
                               </th>
+                              {% endif %}
                            </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+                          {% for user_assigned in project.managers.all %}
                            <tr>
                               <td class="table-td">
                                  <div class="flex items-center">
                                     <div class="flex-none">
                                        <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                          <img src=assets/images/users/user-1.jpg alt="" class="w-full h-full rounded-[100%] object-cover">
+                                          <img src="{% static 'images/users/user-1.jpg' %}" alt="" class="w-full h-full rounded-[100%] object-cover">
                                        </div>
                                     </div>
                                     <div class="flex-1 text-start">
                                        <h4 class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                          Arlene McCoy
+                                          {{ user_assigned.first_name }} 
+                                          {{ user_assigned.last_name }} 
+                                          {{ user_assigned.username }} 
                                        </h4>
                                     </div>
                                  </div>
                               </td>
-                              <td class="table-td ">
-                                 <span class="block min-w-[140px] text-left">
-                                 <span class="inline-block text-center mx-auto py-1">
-                                 <span class="flex items-center space-x-3 rtl:space-x-reverse">
-                                 <span class="h-[6px] w-[6px] bg-danger-500 rounded-full inline-block ring-4 ring-opacity-30 ring-danger-500"></span>
-                                 <span>In progress</span>
-                                 </span>
-                              </td>
-                              <td class="table-td">42.5 hours</td>
-                              <td class="table-td"></td>
+                              {% if user.id == project.created_by.id %}
                               <td class="table-td">
                                  <div class="relative">
                                     <div class="dropdown relative">
@@ -522,17 +509,7 @@
                                        <ul class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700
                                           shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
                                           <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             View</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             Edit</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
+                                             <a href="{% url "project_unassign" project.id user_assigned.id %}" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
                                                 dark:hover:text-white">
                                              Delete</a>
                                           </li>
@@ -540,170 +517,9 @@
                                     </div>
                                  </div>
                               </td>
+                              {% endif %}
                            </tr>
-                           <tr>
-                              <td class="table-td">
-                                 <div class="flex items-center">
-                                    <div class="flex-none">
-                                       <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                          <img src=assets/images/users/user-2.jpg alt="" class="w-full h-full rounded-[100%] object-cover">
-                                       </div>
-                                    </div>
-                                    <div class="flex-1 text-start">
-                                       <h4 class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                          Arlene McCoy
-                                       </h4>
-                                    </div>
-                                 </div>
-                              </td>
-                              <td class="table-td ">
-                                 <span class="block min-w-[140px] text-left">
-                                 <span class="inline-block text-center mx-auto py-1">
-                                 <span class="flex items-center space-x-3 rtl:space-x-reverse">
-                                 <span class="h-[6px] w-[6px] bg-success-500 rounded-full inline-block ring-4 ring-opacity-30 ring-success-500"></span>
-                                 <span>Complete</span>
-                                 </span>
-                                 </span>
-                                 </span>
-                              </td>
-                              <td class="table-td">42.5 hours</td>
-                              <td class="table-td"></td>
-                              <td class="table-td">
-                                 <div class="relative">
-                                    <div class="dropdown relative">
-                                       <button class="text-xl text-center block w-full " type="button" id="teamDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                          <iconify-icon icon="heroicons-outline:dots-vertical"></iconify-icon>
-                                       </button>
-                                       <ul class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700
-                                          shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             View</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             Edit</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             Delete</a>
-                                          </li>
-                                       </ul>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td class="table-td">
-                                 <div class="flex items-center">
-                                    <div class="flex-none">
-                                       <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                          <img src=assets/images/users/user-3.jpg alt="" class="w-full h-full rounded-[100%] object-cover">
-                                       </div>
-                                    </div>
-                                    <div class="flex-1 text-start">
-                                       <h4 class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                          Arlene McCoy
-                                       </h4>
-                                    </div>
-                                 </div>
-                              </td>
-                              <td class="table-td ">
-                                 <span class="block min-w-[140px] text-left">
-                                 <span class="inline-block text-center mx-auto py-1">
-                                 <span class="flex items-center space-x-3 rtl:space-x-reverse">
-                                 <span class="h-[6px] w-[6px] bg-danger-500 rounded-full inline-block ring-4 ring-opacity-30 ring-danger-500"></span>
-                                 <span>In progress</span>
-                                 </span>
-                              </td>
-                              <td class="table-td">42.5 hours</td>
-                              <td class="table-td"></td>
-                              <td class="table-td">
-                                 <div class="relative">
-                                    <div class="dropdown relative">
-                                       <button class="text-xl text-center block w-full " type="button" id="teamDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                          <iconify-icon icon="heroicons-outline:dots-vertical"></iconify-icon>
-                                       </button>
-                                       <ul class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700
-                                          shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             View</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             Edit</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             Delete</a>
-                                          </li>
-                                       </ul>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td class="table-td">
-                                 <div class="flex items-center">
-                                    <div class="flex-none">
-                                       <div class="w-8 h-8 rounded-[100%] ltr:mr-3 rtl:ml-3">
-                                          <img src=assets/images/users/user-4.jpg alt="" class="w-full h-full rounded-[100%] object-cover">
-                                       </div>
-                                    </div>
-                                    <div class="flex-1 text-start">
-                                       <h4 class="text-sm font-medium text-slate-600 whitespace-nowrap">
-                                          Arlene McCoy
-                                       </h4>
-                                    </div>
-                                 </div>
-                              </td>
-                              <td class="table-td ">
-                                 <span class="block min-w-[140px] text-left">
-                                 <span class="inline-block text-center mx-auto py-1">
-                                 <span class="flex items-center space-x-3 rtl:space-x-reverse">
-                                 <span class="h-[6px] w-[6px] bg-success-500 rounded-full inline-block ring-4 ring-opacity-30 ring-success-500"></span>
-                                 <span>Complete</span>
-                                 </span>
-                                 </span>
-                                 </span>
-                              </td>
-                              <td class="table-td">42.5 hours</td>
-                              <td class="table-td"></td>
-                              <td class="table-td">
-                                 <div class="relative">
-                                    <div class="dropdown relative">
-                                       <button class="text-xl text-center block w-full " type="button" id="teamDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                          <iconify-icon icon="heroicons-outline:dots-vertical"></iconify-icon>
-                                       </button>
-                                       <ul class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700
-                                          shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             View</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             Edit</a>
-                                          </li>
-                                          <li>
-                                             <a href="#" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
-                                                dark:hover:text-white">
-                                             Delete</a>
-                                          </li>
-                                       </ul>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
+                           {% endfor %}
                         </tbody>
                      </table>
                   </div>

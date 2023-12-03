@@ -4,7 +4,7 @@
     <ul class="sidebar-menu">
         <li class="sidebar-menu-title">MENU</li>
         <li class="">
-        <a href="#" class="navItem active">
+        <a href="#" class="navItem">
             <span class="flex items-center">
         <iconify-icon class=" nav-icon" icon="heroicons-outline:home"></iconify-icon>
         <span>Home</span>
@@ -22,10 +22,10 @@
             </a>
             <ul class="sidebar-submenu">
               <li>
-                <a href="{% url "project_list" %}">Projects List</a>
+                <a href="{% url "project_list" %}" {% if request.get_full_path == "/projects/list" %}class="active"{% endif %}>Projects List</a>
               </li>
               <li>
-                <a href="{% url "project_add" %}">Add Project</a>
+                <a href="{% url "project_add" %}" {% if request.get_full_path == "/projects/create" %}class="active"{% endif %}>Add Project</a>
               </li>
             </ul>
         </li>
@@ -40,7 +40,7 @@
             <ul class="sidebar-submenu">
               {% for project in project_names %}
               <li>
-                <a href="{% url "tasks_list" project.id %}">Project {{ project.name }} Tasks</a>
+                <a href="{% url "tasks_list" project.id %}" >Project {{ project.name }} Tasks</a>
               </li>
               {% endfor %}
             </ul>

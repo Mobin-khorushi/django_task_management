@@ -76,11 +76,37 @@ def project_delete(request, id):
 
 
 @login_required()
+def project_assign(request, id):
+    project = Project.objects.filter(id=id).first()
+    if project:
+        username_input = request.POST.get("status_select")
+        user = get_user(request)
+        if project.created_by.id == user.id:
+            selected_user = Manager.objects.filter(username=username_input).first()
+            project.managers.add(selected_user)
+    return redirect("project_list")
+
+
+@login_required()
+def project_unassign(request, project_id, user_id):
+    project = Project.objects.filter(id=project_id).first()
+    if project:
+        username_input = request.POST.get("status_select")
+        user = get_user(request)
+        if project.created_by.id == user.id:
+            selected_user = Manager.objects.filter(id=user_id).first()
+            project.managers.remove(selected_user)
+            return redirect("/projects/view/" + str(project.id))
+    return redirect("project_list")
+
+
+@login_required()
 def project_view(request, id):
     project = Project.objects.filter(id=id).first()
     if project:
         user = get_user(request)
-        project_users = project.managers.all().values_list("id")
+        project_users = project.managers.all().values_list("id", flat=True)
+        print(project_users)
         if project.created_by.id == user.id or user.id in project_users:
             comments = 0
             tasks = project.task_set.all()

@@ -10,6 +10,12 @@ urlpatterns = [
     path("projects/create", views.project_add, name="project_add"),
     path("projects/list", views.project_list, name="project_list"),
     path("projects/view/<int:id>", views.project_view, name="project_view"),
+    path("projects/assign/<int:id>", views.project_assign, name="project_assign"),
+    path(
+        "projects/unassign/<int:project_id>/<int:user_id>",
+        views.project_unassign,
+        name="project_unassign",
+    ),
     path(
         "projects/update/<int:id>",
         views.project_update,
