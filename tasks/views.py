@@ -34,6 +34,7 @@ def project_list(request):
     user_projects = user.project_set.all()
     user_made_projects = user.created_by.all()
     result_list = list(chain(user_made_projects, user_projects))
+    result_list = list(dict.fromkeys(result_list))
 
     return render(
         request,

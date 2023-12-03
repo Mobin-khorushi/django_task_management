@@ -12,6 +12,7 @@ def project_names_processor(request):
             projects = user.project_set.all()
             user_made_projects = user.created_by.all()
             result_list = list(chain(user_made_projects, projects))
+            result_list = list(dict.fromkeys(result_list))
             project_names = []
 
             for project in result_list:
